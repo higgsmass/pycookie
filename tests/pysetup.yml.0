@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  gather_facts: False
+  tasks:
+  - name: Install packages required to run the examples
+    apt: pkg={{item}} state=installed
+    sudo: true
+    with_items:
+         - python2.7
+         - python-pip
+         - ansible
+         - git
+
+  - name: install required python dependencies
+    sudo: true
+    pip: requirements=/vagrant/requirements.txt executable=pip
+
+  # create a symlink in the home directory to the shared directory
+  - name: create 'pycookie' link
+    file: src=/vagrant dest=/home/vagrant/pycookie owner=vagrant group=vagrant state=link
+
